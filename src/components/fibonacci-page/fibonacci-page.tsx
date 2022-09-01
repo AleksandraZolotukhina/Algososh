@@ -4,6 +4,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./fibonacci-page.module.css";
+import circles from "../wrapper-circles.module.css";
 
 export const FibonacciPage: React.FC = () => {
   
@@ -37,7 +38,7 @@ export const FibonacciPage: React.FC = () => {
         <Input isLimitText={true} type={"number"} max={19} onChange={(e) => setNumber(Number((e.target as HTMLInputElement).value))} />
         <Button text={"Рассчитать"} isLoader={arrayMapping + 1 !== fibonacciNumbers.length} disabled={number >= 1 && number <= 19 ? false : true} onClick={() => setFibonacciNumbers(getFibonacciNumbers(number))} />
       </div>
-      <div className={styles['list-numbers']}>
+      <div className={circles.wrapper}>
         {
           fibonacciNumbers ? fibonacciNumbers.slice(0, arrayMapping + 1).map((number, index) => <Circle letter={String(number)} index={index} key={index} />) : <></>
         }
