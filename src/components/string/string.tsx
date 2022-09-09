@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -6,6 +6,7 @@ import styles from "./string.module.css";
 import { Circle } from "../ui/circle/circle";
 import circles from "../wrapper-circles.module.css";
 import { ElementStates } from "../../types/element-states";
+import { swap } from "../../functions";
 
 export const StringComponent: React.FC = () => {
   const [stringInput, setStringInput] = useState<string>("");
@@ -34,13 +35,10 @@ export const StringComponent: React.FC = () => {
     setCurrentIndex(0);
     setIsLoader(true);
     const arraySymbols: string[] = getArraySymbols(string);
-    let current;
     setReverseArray([...arraySymbols]);
     await setTimer(500);
     for (let i = 0, j = arraySymbols.length - 1; i < j; i++, j--) {
-      current = arraySymbols[i];
-      arraySymbols[i] = arraySymbols[j];
-      arraySymbols[j] = current;
+      swap(arraySymbols, i, j);
       setCurrentIndex((state) => state + 1)
       setReverseArray([...arraySymbols]);
       await setTimer(500);
