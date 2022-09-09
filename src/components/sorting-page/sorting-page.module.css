@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-inputs {
+    display: flex;
+    column-gap: 14px;
+}
+
+.button-direction {
+    display: flex;
+    column-gap: 12px;
+
+    margin-left: 52px;
+    margin-right: 80px;
+}
+
+.columns {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: flex-end;
+    margin-top: 52px;
+    height: 320px;
+}
