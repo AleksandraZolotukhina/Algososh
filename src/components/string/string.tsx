@@ -9,9 +9,11 @@ import { ElementStates } from "../../types/element-states";
 
 export const StringComponent: React.FC = () => {
   const [stringInput, setStringInput] = useState<string>("");
-  const [reverseArray, setReverseArray] = useState<string[][]>([]);
-  const [arrayMapping, setArrayMapping] = useState<number>(-1);
+  const [reverseArray, setReverseArray] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
+  
   const getArraySymbols = (string: string): string[] => {
     const arraySymbols = [];
     for (let i = 0; i < string.length; i++) {
@@ -20,36 +22,37 @@ export const StringComponent: React.FC = () => {
     return arraySymbols;
   }
 
-  const getReverseString = (string: string): string[][] => {
-    const arraySymbols: string[] = getArraySymbols(string);
-    const arrayStates: string[][] = [];
-    arrayStates.push(getArraySymbols(string));
+  const setTimer = (time: number) => {
+    return new Promise((resolve: any) => {
+      setTimeout(() => {
+        resolve();
+      }, time)
+    })
+  }
 
+  const getReverseString = async (string: string): Promise<string[]> => {
+    setCurrentIndex(0);
+    setIsLoader(true);
+    const arraySymbols: string[] = getArraySymbols(string);
     let current;
+    setReverseArray([...arraySymbols]);
+    await setTimer(500);
     for (let i = 0, j = arraySymbols.length - 1; i < j; i++, j--) {
       current = arraySymbols[i];
       arraySymbols[i] = arraySymbols[j];
       arraySymbols[j] = current;
-      arrayStates.push(arraySymbols);
+      setCurrentIndex((state) => state + 1)
+      setReverseArray([...arraySymbols]);
+      await setTimer(500);
     }
-
-    return arrayStates;
+    setCurrentIndex((state) => state + 1)
+    setIsLoader(false)
+    return arraySymbols;
   }
 
-  useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index < reverseArray.length) {
-        setArrayMapping(index++)
-      }
-      else {
-        clearInterval(timer)
-      }
-    }, 1000)
-  }, [reverseArray])
 
-  const getClass = (index: number, elementIndex: number) => {
-    const length = stringInput.length;
+  const getClassName = (index: number, elementIndex: number) => {
+    const length = reverseArray.length;
     if (elementIndex < index || elementIndex > length - 1 - index) {
       return ElementStates.Modified;
     }
@@ -62,14 +65,11 @@ export const StringComponent: React.FC = () => {
   return (
     <SolutionLayout title="Строка">
       <div className={styles.form}>
-        <Input isLimitText={true} type={"text"} maxLength={11} onChange={(e) => setStringInput((e.target as HTMLInputElement).value)} />
-        <Button text={"Рассчитать"} onClick={() => setReverseArray(getReverseString(stringInput))} />
+        <Input isLimitText={true} type={"text"} maxLength={11} onChange={(e) => { setStringInput((e.target as HTMLInputElement).value) }} />
+        <Button text={"Рассчитать"} isLoader={isLoader} disabled={stringInput !== "" ? false : true} onClick={() => getReverseString(stringInput)} />
       </div>
       <div className={circles.wrapper}>
-        {arrayMapping > -1 && reverseArray[arrayMapping].map((el, index) => {
-          const className = getClass(arrayMapping, index);
-          return (<Circle key={index} letter={el} state={className} />)
-        })}
+        {reverseArray.map((el, index) => <Circle key={index} letter={el} state={getClassName(currentIndex, index)} />)}
       </div>
     </SolutionLayout>
   );
