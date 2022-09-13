@@ -4,6 +4,7 @@
     justify-content: center;
     row-gap: 48px;
     column-gap: 16px;
+    align-items: center;
 
     width: 944px;
     margin: 0 auto;
