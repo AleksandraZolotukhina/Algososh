@@ -5,14 +5,13 @@ import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import styles from "./sorting-page.module.css";
 import { Column } from "../ui/column/column";
-import { swap } from "../../functions";
+import { handlerChange, setTimer, swap } from "../../functions";
+import { ElementStates } from "../../types/element-states";
 
 export const SortingPage: React.FC = () => {
   const [sortingName, setSortingName] = useState<string>("selection-sort");
-
-  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSortingName((e.target as HTMLInputElement).value)
-  }
+  const [currentIndex, setCurrentIndex] = useState<number>(-1);
+  const [counter, setCounter] = useState<number>(-1);
 
   const getRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -30,42 +29,62 @@ export const SortingPage: React.FC = () => {
   const compareLower = (a: number, b: number): boolean => {
     return a < b;
   }
+
   const compareGreater = (a: number, b: number): boolean => {
     return a > b;
   }
 
-  const sortArraySelectMethod = (array: number[], compare: (a: number, b: number) => boolean) => {
+  const getClassName = (index: number, elementIndex: number) => {
+    if (elementIndex < index) {
+      return ElementStates.Modified
+    }
+    if (elementIndex === index || counter === elementIndex) {
+      return ElementStates.Changing
+    }
+    return ElementStates.Default
+  }
+
+  const sortArraySelectMethod = async (array: number[], compare: (a: number, b: number) => boolean) => {
     let index;
     for (let i = 0; i < array.length - 1; i++) {
       index = i;
-      for (let j = i; j < array.length; j++) {
+      setCurrentIndex(index);
+      setCounter(i)
+      await setTimer(500);
+      for (let j = i; j < array.length - 1; j++) {
+        setCounter(j + 1)
+        await setTimer(500);
         if (compare(array[index], array[j + 1])) {
           index = j + 1;
         }
       }
       swap(array, i, index);
     }
+    setCurrentIndex((index) => index + 1);
+    await setTimer(500);
+    setCurrentIndex((index) => index + 1);
     return array
   }
 
-  const sortArrayBubbleMethod = (array: number[], compare: (a: number, b: number) => boolean) => {
-    for (let end = array.length; end > 0; end--) {
-      for (let i = 0; i < end; i++) {
-        if (compare(array[i], array[i + 1])) {
-          swap(array, i, i + 1);
+
+  const sortArrayBubbleMethod = async (array: number[], compare: (a: number, b: number) => boolean) => {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array.length - i - 1; j++) {
+        if (compare(array[j + 1], array[j])) {
+          swap(array, j + 1, j)
         }
       }
     }
     return array;
   }
 
-  const handlerClick = (direction: string) => {
+  const handlerClick = async (direction: string) => {
     const compare = direction === Direction.Ascending ? compareGreater : compareLower;
     if (sortingName === "selection-sort") {
-      setRandomArray([...sortArraySelectMethod(randomArray, compare)])
+      setRandomArray([...await sortArraySelectMethod(randomArray, compare)])
     }
     else {
-      setRandomArray([...sortArrayBubbleMethod(randomArray, compare)])
+      setRandomArray([...await sortArrayBubbleMethod(randomArray, compare)])
     }
   }
 
@@ -75,8 +94,8 @@ export const SortingPage: React.FC = () => {
     <SolutionLayout title="Сортировка массива">
       <div className={styles.wrapper}>
         <div className={styles["radio-inputs"]}>
-          <RadioInput label={"Выбор"} name={"sorting-name"} value={"selection-sort"} defaultChecked onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e)} />
-          <RadioInput label={"Пузырёк"} name={"sorting-name"} value={"bubble-sort"} onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e)} />
+          <RadioInput label={"Выбор"} name={"sorting-name"} value={"selection-sort"} defaultChecked onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
+          <RadioInput label={"Пузырёк"} name={"sorting-name"} value={"bubble-sort"} onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
         </div>
 
         <div className={styles["button-direction"]}>
@@ -87,7 +106,7 @@ export const SortingPage: React.FC = () => {
         <Button text={"Новый массив"} onClick={() => setRandomArray(getRandomArray())} />
       </div>
       <div className={styles.columns}>
-        {randomArray.map((el, index) => <Column key={index} index={el} />)}
+        {randomArray.map((el, index) => <Column key={index} index={el} state={getClassName(currentIndex, index)} />)}
       </div>
     </SolutionLayout>
   );
