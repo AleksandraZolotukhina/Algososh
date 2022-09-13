@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -6,7 +6,7 @@ import styles from "./string.module.css";
 import { Circle } from "../ui/circle/circle";
 import circles from "../wrapper-circles.module.css";
 import { ElementStates } from "../../types/element-states";
-import { swap } from "../../functions";
+import { handlerChange, setTimer, swap } from "../../functions";
 
 export const StringComponent: React.FC = () => {
   const [stringInput, setStringInput] = useState<string>("");
@@ -21,14 +21,6 @@ export const StringComponent: React.FC = () => {
       arraySymbols.push(string[i])
     }
     return arraySymbols;
-  }
-
-  const setTimer = (time: number) => {
-    return new Promise((resolve: any) => {
-      setTimeout(() => {
-        resolve();
-      }, time)
-    })
   }
 
   const getReverseString = async (string: string): Promise<string[]> => {
@@ -63,8 +55,8 @@ export const StringComponent: React.FC = () => {
   return (
     <SolutionLayout title="Строка">
       <div className={styles.form}>
-        <Input isLimitText={true} type={"text"} maxLength={11} onChange={(e) => { setStringInput((e.target as HTMLInputElement).value) }} />
-        <Button text={"Рассчитать"} isLoader={isLoader} disabled={stringInput !== "" ? false : true} onClick={() => getReverseString(stringInput)} />
+        <Input isLimitText={true} type={"text"} maxLength={11} onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement> , setStringInput) }/>
+        <Button text={"Рассчитать"} isLoader={isLoader} disabled={stringInput === ""} onClick={() => getReverseString(stringInput)} />
       </div>
       <div className={circles.wrapper}>
         {reverseArray.map((el, index) => <Circle key={index} letter={el} state={getClassName(currentIndex, index)} />)}
