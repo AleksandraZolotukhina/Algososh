@@ -1,0 +1,16 @@
+.actions{
+    max-width: 952px;
+    margin: 0 auto;
+}
+.actions:first-of-type{
+    margin-bottom: 12px;
+}
+.actions div{
+    width: 204px;
+}
+.actions input{
+    width: 204px;
+}
+.actions button{
+    width: 100%;
+}
