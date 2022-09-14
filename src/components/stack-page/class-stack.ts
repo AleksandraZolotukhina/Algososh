@@ -1,8 +1,9 @@
 interface IStack<T> {
     push: (item: T) => void;
     pop: () => void;
-    peak: () => T | null;
+    getPeak: () => number;
     getSize: () => number;
+    getStack: () => T[];
 }
 
 export class Stack<T> implements IStack<T> {
@@ -16,9 +17,17 @@ export class Stack<T> implements IStack<T> {
         this.container.pop();
     };
 
-    peak(): T | null {
-        return this.container[this.getSize() - 1];
+    getPeak(): number {
+        return this.getSize() - 1;
     };
 
-    getSize = () => this.container.length;
+    getSize(): number {
+        return this.container.length
+    };
+    clear() {
+        this.container = [];
+    }
+    getStack(): T[] {
+        return this.container;
+    }
 }
