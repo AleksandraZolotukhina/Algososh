@@ -31,7 +31,7 @@ export const ListPage: React.FC = () => {
     list.append(input);
   }
 
-  const addElement = async (add: any, index: number) => {
+  const addElement = async (add: () => void, index: number) => {
     add();
     setIsBottomElement(false);
     await setTimer(500);
@@ -51,15 +51,15 @@ export const ListPage: React.FC = () => {
     list.deleteTail()
   }
 
-  const deleteElement = async (func: any, index: number) => {
+  const deleteElement = async (func: () => void, index: number) => {
     setSmallCircles([{ value: array[index] as string, index: index }])
     array.splice(index, 1, undefined);
-    setArray([...array] as any);
+    setArray([...array] as string[]);
     func(); // удаляем элемент
     await setTimer(500);
 
     array.splice(index, 1);
-    setArray([...array] as any);
+    setArray([...array] as string[]);
     setSmallCircles([{ value: input, index: -1 }]) // убираем новый отрисованный элемент
     setIsBottomElement(false)
   }
@@ -76,7 +76,7 @@ export const ListPage: React.FC = () => {
 
 
     array.splice(index, 1, undefined);
-    setArray([...array] as any);
+    setArray([...array] as string[]);
     await setTimer(500);
 
     setIndexPinkCircle(-1);
@@ -91,7 +91,7 @@ export const ListPage: React.FC = () => {
     let state;
     while (curIndex <= Number(index) + 1) {
       state = smallCircles.splice(0, 1, { value: input, index: curIndex });
-      setSmallCircles([...state] as any); //отрисовываем новый элемент
+      setSmallCircles([...state] as [{ value: string, index: number }]); //отрисовываем новый элемент
       await setTimer(500);
 
       setIndexPinkCircle(curIndex);
