@@ -14,13 +14,13 @@ export const StringComponent: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
-  
+
   const getArraySymbols = (string: string): string[] => {
     const arraySymbols = [];
     for (let i = 0; i < string.length; i++) {
-      arraySymbols.push(string[i])
+      arraySymbols.push(string[i]);
     }
-    return arraySymbols;
+    return arraySymbols
   }
 
   const getReverseString = async (string: string): Promise<string[]> => {
@@ -31,35 +31,50 @@ export const StringComponent: React.FC = () => {
     await setTimer(500);
     for (let i = 0, j = arraySymbols.length - 1; i < j; i++, j--) {
       swap(arraySymbols, i, j);
-      setCurrentIndex((state) => state + 1)
+      setCurrentIndex((state) => state + 1);
       setReverseArray([...arraySymbols]);
       await setTimer(500);
     }
     setCurrentIndex((state) => state + 1)
-    setIsLoader(false)
-    return arraySymbols;
+    setIsLoader(false);
+    return arraySymbols
   }
 
 
-  const getClassName = (index: number, elementIndex: number) => {
+  const getColorCircle = (index: number, elementIndex: number) => {
     const length = reverseArray.length;
     if (elementIndex < index || elementIndex > length - 1 - index) {
-      return ElementStates.Modified;
+      return ElementStates.Modified
     }
     if (elementIndex === index || elementIndex === length - 1 - index) {
-      return ElementStates.Changing;
+      return ElementStates.Changing
     }
-    return ElementStates.Default;
+    return ElementStates.Default
   }
 
   return (
     <SolutionLayout title="Строка">
       <div className={styles.form}>
-        <Input isLimitText={true} type={"text"} maxLength={11} onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement> , setStringInput) }/>
-        <Button text={"Рассчитать"} isLoader={isLoader} disabled={stringInput === ""} onClick={() => getReverseString(stringInput)} />
+        <Input
+          isLimitText={true}
+          type={"text"}
+          maxLength={11}
+          onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement>, setStringInput)}
+        />
+        <Button text={"Рассчитать"}
+          isLoader={isLoader}
+          disabled={stringInput === ""}
+          onClick={() => getReverseString(stringInput)}
+        />
       </div>
       <div className={circles.wrapper}>
-        {reverseArray.map((el, index) => <Circle key={index} letter={el} state={getClassName(currentIndex, index)} />)}
+        {reverseArray.map((el, index) =>
+          <Circle
+            key={index}
+            letter={el}
+            state={getColorCircle(currentIndex, index)}
+          />
+        )}
       </div>
     </SolutionLayout>
   );

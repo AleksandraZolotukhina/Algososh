@@ -77,7 +77,7 @@ export const SortingPage: React.FC = () => {
     }
   }
 
-  const getClassName = (indexElement: number) => {
+  const getColorColumn = (indexElement: number) => {
     if (sortingName === "bubble-sort") {
       if (indexElement === currentIndex || indexElement === currentIndex + 1) {
         return ElementStates.Changing
@@ -113,23 +113,50 @@ export const SortingPage: React.FC = () => {
     <SolutionLayout title="Сортировка массива">
       <div className={styles.wrapper}>
         <div className={styles["radio-inputs"]}>
-          <RadioInput label={"Выбор"} name={"sorting-name"} disabled={disabled} value={"selection-sort"} defaultChecked onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
-          <RadioInput label={"Пузырёк"} name={"sorting-name"} disabled={disabled} value={"bubble-sort"} onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
+          <RadioInput
+            label={"Выбор"}
+            name={"sorting-name"}
+            disabled={disabled}
+            value={"selection-sort"}
+            defaultChecked
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)}
+          />
+          <RadioInput
+            label={"Пузырёк"}
+            name={"sorting-name"}
+            disabled={disabled}
+            value={"bubble-sort"}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)}
+          />
         </div>
 
         <div className={styles["button-direction"]}>
-          <Button text={"По возрастанию"} disabled={isDisabled()} isLoader={direction === Direction.Ascending && isLoading ? true : false} sorting={Direction.Ascending} onClick={() => handlerClick(Direction.Ascending)} />
-          <Button text={"По убыванию"} disabled={isDisabled()} isLoader={direction === Direction.Descending && isLoading ? true : false} sorting={Direction.Descending} onClick={() => handlerClick(Direction.Descending)} />
+          <Button
+            text={"По возрастанию"}
+            disabled={isDisabled()}
+            isLoader={direction === Direction.Ascending && isLoading ? true : false}
+            sorting={Direction.Ascending} onClick={() => handlerClick(Direction.Ascending)}
+          />
+          <Button
+            text={"По убыванию"}
+            disabled={isDisabled()}
+            isLoader={direction === Direction.Descending && isLoading ? true : false}
+            sorting={Direction.Descending} onClick={() => handlerClick(Direction.Descending)}
+          />
         </div>
-        <Button text={"Новый массив"} disabled={disabled} onClick={() => {
-          setCurrentIndex(-2);
-          setCounter(-2);
-          setRandomArray(getRandomArray())
-        }} />
+        <Button
+          text={"Новый массив"}
+          disabled={disabled}
+          onClick={() => {
+            setCurrentIndex(-2);
+            setCounter(-2);
+            setRandomArray(getRandomArray())
+          }}
+        />
       </div>
 
       <div className={styles.columns}>
-        {randomArray.map((el, index) => <Column key={index} index={el} state={getClassName(index)} />)}
+        {randomArray.map((el, index) => <Column key={index} index={el} state={getColorColumn(index)} />)}
       </div>
     </SolutionLayout>
   );

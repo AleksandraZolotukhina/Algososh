@@ -26,14 +26,14 @@ export const ListPage: React.FC = () => {
   const addHead = () => {
     setInput("");
     setLoader(ADD_HEAD);
-    setSmallCircles([{ value: input, index: 0 }]) //отрисовываем новый элемент
+    setSmallCircles([{ value: input, index: 0 }]); //отрисовываем новый элемент
     list.prepend(input);
   }
 
   const addTail = () => {
     setInput("");
     setLoader(ADD_TAIL);
-    setSmallCircles([{ value: input, index: list.getSize() - 1 }]) //отрисовываем новый элемент
+    setSmallCircles([{ value: input, index: list.getSize() - 1 }]); //отрисовываем новый элемент
     list.append(input);
   }
 
@@ -43,7 +43,7 @@ export const ListPage: React.FC = () => {
     setIsBottomElement(false);
     await setTimer(500);
 
-    setSmallCircles([{ value: input, index: -1 }]) //удаляем отрисованный новый элемент
+    setSmallCircles([{ value: input, index: -1 }]); //удаляем отрисованный новый элемент
     setArray([...list.toArray()]); //добавляем в массив новый элемент
     setIndexGreenCircle(index); //выделяем зеленым, что добавили новый элемент
     await setTimer(500);
@@ -123,12 +123,12 @@ export const ListPage: React.FC = () => {
 
   const getColorCircle = (index: number) => {
     if (index < indexPinkCircle) {
-      return ElementStates.Changing;
+      return ElementStates.Changing
     }
     if (index === indexGreenCircle) {
-      return ElementStates.Modified;
+      return ElementStates.Modified
     }
-    return ElementStates.Default;
+    return ElementStates.Default
   }
 
   const disableByIndex = (disable: () => boolean): boolean => {
@@ -152,49 +152,57 @@ export const ListPage: React.FC = () => {
   return (
     <SolutionLayout title="Связный список">
       <div className={`${structure.actions} ${styles.actions}`}>
-        <Input type={"text"}
+        <Input
+          type={"text"}
           isLimitText={true}
           maxLength={4}
           placeholder={"Введите значение"}
           value={input}
           onChange={(e) => setInput((e.target as HTMLInputElement).value)}
         />
-        <Button text={"Добавить в head"}
+        <Button
+          text={"Добавить в head"}
           disabled={input === "" || loader !== undefined}
           isLoader={loader === ADD_HEAD}
           onClick={() => addElement(addHead, 0)}
         />
-        <Button text={"Добавить в tail"}
+        <Button
+          text={"Добавить в tail"}
           disabled={input === "" || loader !== undefined}
           isLoader={loader === ADD_TAIL}
           onClick={() => addElement(addTail, list.getSize())}
         />
-        <Button text={"Удалить из head"}
+        <Button
+          text={"Удалить из head"}
           disabled={list.getSize() === 0 || loader !== undefined}
           isLoader={loader === DELETE_HEAD}
           onClick={() => { setIsBottomElement(true); deleteElement(deleteHead, 0) }}
         />
-        <Button text={"Удалить из tail"}
+        <Button
+          text={"Удалить из tail"}
           disabled={list.getSize() === 0 || loader !== undefined}
           isLoader={loader === DELETE_TAIL}
           onClick={() => { setIsBottomElement(true); deleteElement(deleteTail, list.getSize() - 1) }}
         />
       </div>
       <div className={`${structure.actions} ${styles.actions}`}>
-        <Input type={"number"}
+        <Input
+          type={"number"}
           isLimitText={true}
           max={list.getSize()}
           placeholder={"Введите индекс"}
           value={index}
           onChange={(e) => setIndex((e.target as HTMLInputElement).value)}
         />
-        <Button text={"Добавить по индексу"}
+        <Button
+          text={"Добавить по индексу"}
           disabled={disableByIndex(disableOnInputAndIndex)}
           isLoader={loader === ADD_BY_INDEX}
           onClick={() => addByIndex()}
         />
 
-        <Button text={"Удалить по индексу"}
+        <Button
+          text={"Удалить по индексу"}
           disabled={disableByIndex(disableOnInput)}
           isLoader={loader === DELETE_BY_INDEX}
           onClick={() => deleteByIndex(Number(index))}

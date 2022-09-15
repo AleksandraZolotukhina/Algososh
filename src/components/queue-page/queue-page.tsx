@@ -58,15 +58,39 @@ export const QueuePage: React.FC = () => {
     <SolutionLayout title="Очередь">
       <div className={styles.wrapper}>
         <div className={`${structure.actions} ${styles.actions}`}>
-          <Input isLimitText={true} type={"text"} maxLength={4} value={input} onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement>, setInput)} />
-          <Button text={"Добавить"} onClick={() => enqueue(input)} disabled={input === "" || queue.getSize() === length} />
-          <Button text={"Удалить"} onClick={dequeue} disabled={length === 0} />
+          <Input
+            type={"text"}
+            isLimitText={true}
+            maxLength={4}
+            value={input}
+            onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement>, setInput)} 
+          />
+          <Button
+            text={"Добавить"}
+            onClick={() => enqueue(input)} disabled={input === "" || queue.getSize() === length} 
+          />
+          <Button
+            text={"Удалить"}
+            onClick={dequeue} disabled={length === 0} 
+          />
         </div>
 
-        <Button text={"Очистить"} onClick={clear} disabled={tail === 0 && head === 0} />
+        <Button
+          text={"Очистить"}
+          onClick={clear}
+          disabled={tail === 0 && head === 0}
+        />
       </div>
       <div className={circles.wrapper}>
-        {queueSymbols.map((el, index) => <Circle key={index} letter={el} index={index} head={index === head ? "head" : ""} tail={index === tail - 1 ? "tail" : ""} state={index === count ? ElementStates.Changing : ElementStates.Default} />)}
+        {queueSymbols.map((el, index) =>
+          <Circle
+            key={index}
+            letter={el}
+            index={index}
+            head={index === head ? "head" : ""}
+            tail={index === tail - 1 ? "tail" : ""}
+            state={index === count ? ElementStates.Changing : ElementStates.Default}
+          />)}
       </div>
     </SolutionLayout>
   );

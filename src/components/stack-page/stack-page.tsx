@@ -49,15 +49,41 @@ export const StackPage: React.FC = () => {
     <SolutionLayout title="Стек">
       <div className={styles.wrapper}>
         <div className={`${structure.actions} ${styles.actions}`}>
-          <Input isLimitText={true} type={"text"} maxLength={4} value={input} onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement>, setInput)} />
-          <Button text={"Добавить"} onClick={() => push(input)} disabled={input === ""} />
-          <Button text={"Удалить"} onClick={() => pop()} disabled={stack.getSize() === 0} />
+          <Input
+            isLimitText={true}
+            type={"text"}
+            maxLength={4}
+            value={input}
+            onChange={(e) => handlerChange(e as ChangeEvent<HTMLInputElement>, setInput)}
+          />
+          <Button
+            text={"Добавить"}
+            onClick={() => push(input)}
+            disabled={input === ""}
+          />
+          <Button
+            text={"Удалить"}
+            onClick={() => pop()}
+            disabled={stack.getSize() === 0}
+          />
         </div>
 
-        <Button text={"Очистить"} onClick={() => clear()} disabled={stack.getSize() === 0} />
+        <Button
+          text={"Очистить"}
+          onClick={() => clear()}
+          disabled={stack.getSize() === 0}
+        />
       </div>
       <div className={circles.wrapper}>
-        {stackSymbols.map((el, index) => <Circle key={index} letter={el} index={index} head={peak() === index ? "top" : null} state={index === count ? ElementStates.Changing : ElementStates.Default} />)}
+        {stackSymbols.map((el, index) =>
+          <Circle
+            key={index}
+            letter={el}
+            index={index}
+            head={peak() === index ? "top" : null}
+            state={index === count ? ElementStates.Changing : ElementStates.Default}
+          />
+        )}
       </div>
     </SolutionLayout>
   );
