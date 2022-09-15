@@ -17,7 +17,7 @@ export const FibonacciPage: React.FC = () => {
     for (let i = 2; i <= n; i++) {
       array[i] = array[i - 1] + array[i - 2];
     }
-    return array;
+    return array
   }
 
   useEffect(() => {

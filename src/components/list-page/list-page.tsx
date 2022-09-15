@@ -7,16 +7,17 @@ import { Circle } from "../ui/circle/circle";
 import { Input } from "../ui/input/input";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
-import { setTimer } from "../../functions";
+import { getRandomArray, setTimer } from "../../functions";
 import { ElementStates } from "../../types/element-states";
 import { LinkedList } from "./class-linked-list";
 import { ADD_BY_INDEX, ADD_HEAD, ADD_TAIL, DELETE_BY_INDEX, DELETE_HEAD, DELETE_TAIL, TLoader } from "./utils";
 
 export const ListPage: React.FC = () => {
+  const initialArray = getRandomArray(1, 6, 0, 9999).map(number => String(number));
   const [input, setInput] = useState<string>("");
   const [index, setIndex] = useState<string>("");
-  const [list] = useState(new LinkedList(["0", "34", "8", "1"]));
-  const [array, setArray] = useState<string[] | undefined[]>(["0", "34", "8", "1"]);
+  const [list] = useState(new LinkedList(initialArray));
+  const [array, setArray] = useState<string[] | undefined[]>(initialArray);
   const [smallCircles, setSmallCircles] = useState<[{ value: string, index: number }]>([{ value: "0", index: -1 }]);
   const [indexPinkCircle, setIndexPinkCircle] = useState<number>(-1);
   const [indexGreenCircle, setIndexGreenCircle] = useState<number>(-1);
@@ -214,7 +215,8 @@ export const ListPage: React.FC = () => {
           smallCircles.map(el => {
             let marginLeft = `calc(((100% - 136px*${array.length - 1} - 80px)/2) + 14px + ${el.index}*136px)`;
             return el.index !== -1 ?
-              <div key={el.index}
+              <div 
+                key={el.index}
                 className={styles["circles"]}
                 style={{ marginLeft: marginLeft, top: isBottomElement ? '162px' : '-16px' }}
               >

@@ -5,15 +5,15 @@ import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import styles from "./sorting-page.module.css";
 import { Column } from "../ui/column/column";
-import { handlerChange, setTimer, swap } from "../../functions";
+import { getRandomArray, handlerChange, setTimer, swap } from "../../functions";
 import { ElementStates } from "../../types/element-states";
-import { compareGreater, compareLower, getRandomArray } from "./utils";
+import { compareGreater, compareLower } from "./utils";
 
 export const SortingPage: React.FC = () => {
   const [sortingName, setSortingName] = useState<string>("selection-sort");
   const [currentIndex, setCurrentIndex] = useState<number>(-2);
   const [counter, setCounter] = useState<number>(-2);
-  const [randomArray, setRandomArray] = useState<number[]>(getRandomArray());
+  const [randomArray, setRandomArray] = useState<number[]>(getRandomArray(3, 17, 0, 100));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [direction, setDirection] = useState<string>("");
@@ -41,6 +41,7 @@ export const SortingPage: React.FC = () => {
     await setTimer(500);
     setIsLoading(false);
     setDisabled(false);
+    setCounter(array.length + 1);
     return array
   }
 
@@ -150,7 +151,7 @@ export const SortingPage: React.FC = () => {
           onClick={() => {
             setCurrentIndex(-2);
             setCounter(-2);
-            setRandomArray(getRandomArray())
+            setRandomArray(getRandomArray(3, 17, 0, 100))
           }}
         />
       </div>

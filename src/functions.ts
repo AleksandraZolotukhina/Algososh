@@ -17,3 +17,16 @@ export const setTimer = (time: number) => {
     }, time)
   })
 }
+
+const getRandomNumber = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+export const getRandomArray = (minElement:number, maxElement:number, minSize:number, maxSize:number): number[] => {
+  const countElements: number = getRandomNumber(minElement, maxElement);
+  const array: number[] = [];
+  for (let i = 0; i < countElements; i++) {
+    array.push(getRandomNumber(minSize, maxSize));
+  }
+  return array
+}
