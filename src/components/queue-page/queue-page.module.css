@@ -1,0 +1,9 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 829px;
+    margin: 0 auto;
+}
+.wrapper input{
+    width: 374px;
+}
