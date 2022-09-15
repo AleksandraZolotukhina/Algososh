@@ -134,7 +134,7 @@ export const ListPage: React.FC = () => {
   }
 
   const disableByIndex = (disable: () => boolean): boolean => {
-    if (!(Number(index) <= list.getSize() && Number(index) >= 0)) {
+    if (!(Number(index) < list.getSize() && Number(index) >= 0)) {
       return true
     }
     if (loader !== undefined) {
@@ -191,7 +191,7 @@ export const ListPage: React.FC = () => {
         <Input
           type={"number"}
           isLimitText={true}
-          max={list.getSize()}
+          max={list.getSize() - 1}
           placeholder={"Введите индекс"}
           value={index}
           onChange={(e) => setIndex((e.target as HTMLInputElement).value)}
