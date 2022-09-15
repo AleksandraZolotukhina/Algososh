@@ -4,6 +4,7 @@ import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import styles from "./sorting-page.module.css";
+import { v4 as key } from 'uuid';
 import { Column } from "../ui/column/column";
 import { getRandomArray, handlerChange, setTimer, swap } from "../../functions";
 import { ElementStates } from "../../types/element-states";
@@ -157,7 +158,7 @@ export const SortingPage: React.FC = () => {
       </div>
 
       <div className={styles.columns}>
-        {randomArray.map((el, index) => <Column key={index} index={el} state={getColorColumn(index)} />)}
+        {randomArray.map((el, index) => <Column key={key()} index={el} state={getColorColumn(index)} />)}
       </div>
     </SolutionLayout>
   );

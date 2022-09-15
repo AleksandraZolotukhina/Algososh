@@ -5,6 +5,7 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./fibonacci-page.module.css";
 import circles from "../wrapper-circles.module.css";
+import { v4 as key } from 'uuid';
 
 export const FibonacciPage: React.FC = () => {
 
@@ -54,7 +55,7 @@ export const FibonacciPage: React.FC = () => {
             <Circle
               letter={String(number)}
               index={index}
-              key={index} 
+              key={key()} 
             />
           )
         }

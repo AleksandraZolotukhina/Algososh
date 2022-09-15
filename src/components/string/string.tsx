@@ -3,6 +3,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import styles from "./string.module.css";
+import { v4 as key } from 'uuid';
 import { Circle } from "../ui/circle/circle";
 import circles from "../wrapper-circles.module.css";
 import { ElementStates } from "../../types/element-states";
@@ -70,7 +71,7 @@ export const StringComponent: React.FC = () => {
       <div className={circles.wrapper}>
         {reverseArray.map((el, index) =>
           <Circle
-            key={index}
+            key={key()}
             letter={el}
             state={getColorCircle(currentIndex, index)}
           />

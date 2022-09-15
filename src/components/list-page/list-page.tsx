@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import structure from "../data-structure.module.css";
 import circles from "../wrapper-circles.module.css";
 import styles from "./list-page.module.css";
+import { v4 as key } from 'uuid';
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { Input } from "../ui/input/input";
@@ -216,27 +217,28 @@ export const ListPage: React.FC = () => {
             let marginLeft = `calc(((100% - 136px*${array.length - 1} - 80px)/2) + 14px + ${el.index}*136px)`;
             return el.index !== -1 ?
               <div 
-                key={el.index}
+                key={key()}
                 className={styles["circles"]}
                 style={{ marginLeft: marginLeft, top: isBottomElement ? '162px' : '-16px' }}
               >
                 <Circle letter={el.value} isSmall={true} state={ElementStates.Changing} />
               </div> :
-              <></>
+              <Fragment key={key()}></Fragment>
           })
         }
       </div>
       <div className={circles.wrapper}>
         {array.map((el: string | undefined, index: number) => {
           return (
-            <Fragment key={index}>
-              <Circle letter={el}
+            <Fragment key={key()}>
+              <Circle 
+                letter={el}
                 state={getColorCircle(index)}
                 index={index}
                 head={index === 0 ? "head" : ""}
                 tail={index === array.length - 1 ? "tail" : ""}
               />
-              {index < array.length - 1 ? <ArrowIcon /> : <></>}
+              {index < array.length - 1 ? <ArrowIcon key={key()}/> : <></>}
             </Fragment>
           )
         })

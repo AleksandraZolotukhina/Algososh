@@ -3,6 +3,7 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import structure from "../data-structure.module.css";
 import circles from "../wrapper-circles.module.css";
 import styles from "./stack-page.module.css";
+import { v4 as key } from 'uuid';
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
@@ -77,7 +78,7 @@ export const StackPage: React.FC = () => {
       <div className={circles.wrapper}>
         {stackSymbols.map((el, index) =>
           <Circle
-            key={index}
+            key={key()}
             letter={el}
             index={index}
             head={peak() === index ? "top" : null}
