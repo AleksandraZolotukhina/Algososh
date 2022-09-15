@@ -7,52 +7,29 @@ import styles from "./sorting-page.module.css";
 import { Column } from "../ui/column/column";
 import { handlerChange, setTimer, swap } from "../../functions";
 import { ElementStates } from "../../types/element-states";
+import { compareGreater, compareLower, getRandomArray } from "./utils";
 
 export const SortingPage: React.FC = () => {
   const [sortingName, setSortingName] = useState<string>("selection-sort");
-  const [currentIndex, setCurrentIndex] = useState<number>(-1);
-  const [counter, setCounter] = useState<number>(-1);
-
-  const getRandomNumber = (min: number, max: number): number => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
-
-  const getRandomArray = (): number[] => {
-    const countElements: number = getRandomNumber(3, 17);
-    const array: number[] = [];
-    for (let i = 0; i < countElements; i++) {
-      array.push(getRandomNumber(0, 100))
-    }
-    return array
-  }
-
-  const compareLower = (a: number, b: number): boolean => {
-    return a < b;
-  }
-
-  const compareGreater = (a: number, b: number): boolean => {
-    return a > b;
-  }
-
-  const getClassName = (index: number, elementIndex: number) => {
-    if (elementIndex < index) {
-      return ElementStates.Modified
-    }
-    if (elementIndex === index || counter === elementIndex) {
-      return ElementStates.Changing
-    }
-    return ElementStates.Default
-  }
+  const [currentIndex, setCurrentIndex] = useState<number>(-2);
+  const [counter, setCounter] = useState<number>(-2);
+  const [randomArray, setRandomArray] = useState<number[]>(getRandomArray());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [direction, setDirection] = useState<string>("");
 
   const sortArraySelectMethod = async (array: number[], compare: (a: number, b: number) => boolean) => {
+    setIsLoading(true);
+    setDisabled(true);
+    setCounter(-2);
     let index;
     for (let i = 0; i < array.length - 1; i++) {
       index = i;
       setCurrentIndex(index);
-      setCounter(i)
+      setCounter(i);
       await setTimer(500);
       for (let j = i; j < array.length - 1; j++) {
-        setCounter(j + 1)
+        setCounter(j + 1);
         await setTimer(500);
         if (compare(array[index], array[j + 1])) {
           index = j + 1;
@@ -60,53 +37,99 @@ export const SortingPage: React.FC = () => {
       }
       swap(array, i, index);
     }
-    setCurrentIndex((index) => index + 1);
+    setCurrentIndex((index) => index + 2);
     await setTimer(500);
-    setCurrentIndex((index) => index + 1);
+    setIsLoading(false);
+    setDisabled(false);
     return array
   }
 
-
   const sortArrayBubbleMethod = async (array: number[], compare: (a: number, b: number) => boolean) => {
+    setIsLoading(true);
+    setDisabled(true);
+    setCounter(-2);
     for (let i = 0; i < array.length; i++) {
+      setCounter(i);
       for (let j = 0; j < array.length - i - 1; j++) {
+        setCurrentIndex(j);
+        await setTimer(500);
         if (compare(array[j + 1], array[j])) {
-          swap(array, j + 1, j)
+          swap(array, j + 1, j);
         }
       }
     }
-    return array;
+    setCurrentIndex(-2);
+    setCounter(array.length + 1);
+    await setTimer(500);
+    setIsLoading(false);
+    setDisabled(false);
+    return array
   }
 
   const handlerClick = async (direction: string) => {
+    setDirection(direction);
     const compare = direction === Direction.Ascending ? compareGreater : compareLower;
     if (sortingName === "selection-sort") {
-      setRandomArray([...await sortArraySelectMethod(randomArray, compare)])
+      setRandomArray([...await sortArraySelectMethod(randomArray, compare)]);
     }
     else {
-      setRandomArray([...await sortArrayBubbleMethod(randomArray, compare)])
+      setRandomArray([...await sortArrayBubbleMethod(randomArray, compare)]);
     }
   }
 
-  const [randomArray, setRandomArray] = useState<number[]>(getRandomArray());
+  const getClassName = (indexElement: number) => {
+    if (sortingName === "bubble-sort") {
+      if (indexElement === currentIndex || indexElement === currentIndex + 1) {
+        return ElementStates.Changing
+      }
+      else if (indexElement >= randomArray.length - counter) {
+        return ElementStates.Modified
+      }
+      return ElementStates.Default
+    }
+
+    if (sortingName === "selection-sort") {
+      if (indexElement < currentIndex) {
+        return ElementStates.Modified
+      }
+      else if (indexElement === currentIndex || counter === indexElement) {
+        return ElementStates.Changing
+      }
+      return ElementStates.Default
+    }
+  }
+
+  const isDisabled = () => {
+    if (direction !== Direction.Ascending && disabled) {
+      return true
+    }
+    else if (direction !== Direction.Descending && disabled) {
+      return true
+    }
+    return false
+  }
 
   return (
     <SolutionLayout title="Сортировка массива">
       <div className={styles.wrapper}>
         <div className={styles["radio-inputs"]}>
-          <RadioInput label={"Выбор"} name={"sorting-name"} value={"selection-sort"} defaultChecked onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
-          <RadioInput label={"Пузырёк"} name={"sorting-name"} value={"bubble-sort"} onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
+          <RadioInput label={"Выбор"} name={"sorting-name"} disabled={disabled} value={"selection-sort"} defaultChecked onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
+          <RadioInput label={"Пузырёк"} name={"sorting-name"} disabled={disabled} value={"bubble-sort"} onChange={(e: ChangeEvent<HTMLInputElement>) => handlerChange(e, setSortingName)} />
         </div>
 
         <div className={styles["button-direction"]}>
-          <Button text={"По возрастанию"} sorting={Direction.Ascending} onClick={() => handlerClick(Direction.Ascending)} />
-          <Button text={"По убыванию"} sorting={Direction.Descending} onClick={() => handlerClick(Direction.Descending)} />
+          <Button text={"По возрастанию"} disabled={isDisabled()} isLoader={direction === Direction.Ascending && isLoading ? true : false} sorting={Direction.Ascending} onClick={() => handlerClick(Direction.Ascending)} />
+          <Button text={"По убыванию"} disabled={isDisabled()} isLoader={direction === Direction.Descending && isLoading ? true : false} sorting={Direction.Descending} onClick={() => handlerClick(Direction.Descending)} />
         </div>
-
-        <Button text={"Новый массив"} onClick={() => setRandomArray(getRandomArray())} />
+        <Button text={"Новый массив"} disabled={disabled} onClick={() => {
+          setCurrentIndex(-2);
+          setCounter(-2);
+          setRandomArray(getRandomArray())
+        }} />
       </div>
+
       <div className={styles.columns}>
-        {randomArray.map((el, index) => <Column key={index} index={el} state={getClassName(currentIndex, index)} />)}
+        {randomArray.map((el, index) => <Column key={index} index={el} state={getClassName(index)} />)}
       </div>
     </SolutionLayout>
   );
