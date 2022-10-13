@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
@@ -15,7 +15,15 @@ export const StringComponent: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
-
+  useEffect(()=>{
+    return ()=>{
+      setStringInput("");
+      setReverseArray([]);
+      setCurrentIndex(0);
+      setIsLoader(false)
+    }
+  },[])
+  
   const getArraySymbols = (string: string): string[] => {
     const arraySymbols = [];
     for (let i = 0; i < string.length; i++) {
@@ -66,14 +74,16 @@ export const StringComponent: React.FC = () => {
           isLoader={isLoader}
           disabled={stringInput === ""}
           onClick={() => getReverseString(stringInput)}
+          data-cy="button"
         />
       </div>
-      <div className={circles.wrapper}>
+      <div className={circles.wrapper} data-testid="circles">
         {reverseArray.map((el, index) =>
           <Circle
             key={key()}
             letter={el}
             state={getColorCircle(currentIndex, index)}
+            data-testid="circle"
           />
         )}
       </div>

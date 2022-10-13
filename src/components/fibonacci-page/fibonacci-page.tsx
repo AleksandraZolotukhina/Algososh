@@ -47,9 +47,10 @@ export const FibonacciPage: React.FC = () => {
           isLoader={arrayMapping + 1 !== fibonacciNumbers.length}
           disabled={number >= 1 && number <= 19 ? false : true}
           onClick={() => setFibonacciNumbers(getFibonacciNumbers(number))}
+          data-cy="add"
         />
       </div>
-      <div className={circles.wrapper}>
+      <div className={circles.wrapper} data-testid="circles">
         {
           fibonacciNumbers.slice(0, arrayMapping + 1).map((number, index) =>
             <Circle

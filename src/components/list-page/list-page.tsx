@@ -156,6 +156,7 @@ export const ListPage: React.FC = () => {
       <div className={`${structure.actions} ${styles.actions}`}>
         <Input
           type={"text"}
+          data-cy="input-value"
           isLimitText={true}
           maxLength={4}
           placeholder={"Введите значение"}
@@ -164,24 +165,28 @@ export const ListPage: React.FC = () => {
         />
         <Button
           text={"Добавить в head"}
+          data-cy="add-head"
           disabled={input === "" || loader !== undefined}
           isLoader={loader === ADD_HEAD}
           onClick={() => addElement(addHead, 0)}
         />
         <Button
           text={"Добавить в tail"}
+          data-cy="add-tail"
           disabled={input === "" || loader !== undefined}
           isLoader={loader === ADD_TAIL}
           onClick={() => addElement(addTail, list.getSize())}
         />
         <Button
           text={"Удалить из head"}
+          data-cy="delete-head"
           disabled={list.getSize() === 0 || loader !== undefined}
           isLoader={loader === DELETE_HEAD}
           onClick={() => { setIsBottomElement(true); deleteElement(deleteHead, 0) }}
         />
         <Button
           text={"Удалить из tail"}
+          data-cy="delete-tail"
           disabled={list.getSize() === 0 || loader !== undefined}
           isLoader={loader === DELETE_TAIL}
           onClick={() => { setIsBottomElement(true); deleteElement(deleteTail, list.getSize() - 1) }}
@@ -190,6 +195,7 @@ export const ListPage: React.FC = () => {
       <div className={`${structure.actions} ${styles.actions}`}>
         <Input
           type={"number"}
+          data-cy="input-index"
           isLimitText={true}
           max={list.getSize() - 1}
           placeholder={"Введите индекс"}
@@ -198,6 +204,7 @@ export const ListPage: React.FC = () => {
         />
         <Button
           text={"Добавить по индексу"}
+          data-cy="add-index"
           disabled={disableByIndex(disableOnInputAndIndex)}
           isLoader={loader === ADD_BY_INDEX}
           onClick={() => addByIndex()}
@@ -205,6 +212,7 @@ export const ListPage: React.FC = () => {
 
         <Button
           text={"Удалить по индексу"}
+          data-cy="delete-index"
           disabled={disableByIndex(disableOnInput)}
           isLoader={loader === DELETE_BY_INDEX}
           onClick={() => deleteByIndex(Number(index))}
@@ -218,6 +226,7 @@ export const ListPage: React.FC = () => {
             return el.index !== -1 ?
               <div 
                 key={key()}
+                data-cy="small-circle"
                 className={styles["circles"]}
                 style={{ marginLeft: marginLeft, top: isBottomElement ? '162px' : '-16px' }}
               >
@@ -227,7 +236,7 @@ export const ListPage: React.FC = () => {
           })
         }
       </div>
-      <div className={circles.wrapper}>
+      <div className={circles.wrapper} data-cy="circles">
         {array.map((el: string | undefined, index: number) => {
           return (
             <Fragment key={key()}>
