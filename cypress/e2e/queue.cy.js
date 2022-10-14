@@ -1,6 +1,6 @@
 describe('Тестирование Стека', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/queue')
+        cy.visit('queue')
         cy.get('input').as('input')
         cy.get('[data-cy="add"]').as('add-button')
         cy.get('[data-cy="delete"]').as('delete-button')

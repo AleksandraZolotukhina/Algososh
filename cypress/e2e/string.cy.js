@@ -1,6 +1,6 @@
 describe('Тестирование Строки', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/recursion')
+        cy.visit('recursion')
         cy.get('input').as('input')
         cy.get('[data-cy="button"]').as('add-button')
     })

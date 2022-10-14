@@ -4,7 +4,7 @@ describe('Тестирование Стека', () => {
     const modifedBorder = '4px solid rgb(127, 224, 81)'
 
     beforeEach(() => {
-        cy.visit('http://localhost:3000/list')
+        cy.visit('list')
         cy.get('[data-cy="input-value"]').as('input-value')
         cy.get('[data-cy="input-index"]').as('input-index')
 

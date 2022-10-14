@@ -1,7 +1,7 @@
 describe('Тестирование Фибоначчи', () => {
 
     beforeEach(() => {
-        cy.visit('http://localhost:3000/fibonacci')
+        cy.visit('fibonacci')
         cy.get('[data-testid="circles"]').as('circles')
         cy.get('input').as('input')
         cy.get('[data-cy="add"]').as('add-button')
