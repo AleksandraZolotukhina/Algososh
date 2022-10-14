@@ -61,11 +61,13 @@ export const StackPage: React.FC = () => {
             text={"Добавить"}
             onClick={() => push(input)}
             disabled={input === ""}
+            data-cy="add"
           />
           <Button
             text={"Удалить"}
             onClick={() => pop()}
             disabled={stack.getSize() === 0}
+            data-cy="delete"
           />
         </div>
 
@@ -73,9 +75,10 @@ export const StackPage: React.FC = () => {
           text={"Очистить"}
           onClick={() => clear()}
           disabled={stack.getSize() === 0}
+          data-cy="clear"
         />
       </div>
-      <div className={circles.wrapper}>
+      <div className={circles.wrapper} data-testid="circles">
         {stackSymbols.map((el, index) =>
           <Circle
             key={key()}

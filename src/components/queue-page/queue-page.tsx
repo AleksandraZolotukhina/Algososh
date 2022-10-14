@@ -69,10 +69,12 @@ export const QueuePage: React.FC = () => {
           <Button
             text={"Добавить"}
             onClick={() => enqueue(input)} disabled={input === "" || queue.getSize() === length} 
+            data-cy="add"
           />
           <Button
             text={"Удалить"}
             onClick={dequeue} disabled={length === 0} 
+            data-cy="delete"
           />
         </div>
 
@@ -80,12 +82,14 @@ export const QueuePage: React.FC = () => {
           text={"Очистить"}
           onClick={clear}
           disabled={tail === 0 && head === 0}
+          data-cy="clear"
         />
       </div>
-      <div className={circles.wrapper}>
+      <div className={circles.wrapper} data-testid="circles">
         {queueSymbols.map((el, index) =>
           <Circle
             key={key()}
+            data-cy="circle"
             letter={el}
             index={index}
             head={index === head ? "head" : ""}
