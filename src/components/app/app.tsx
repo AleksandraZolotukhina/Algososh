@@ -11,7 +11,7 @@ import styles from "./app.module.css";
 const App = () => {
   return (
     <div className={styles.app}>
-      <BrowserRouter>
+      <BrowserRouter basename="/Algososh">
         <Switch>
           <Route path="/" exact>
             <MainPage />
